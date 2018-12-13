@@ -42,7 +42,7 @@ public class Cashes extends AppCompatActivity {
 
                 Object o = listCaches.getItemAtPosition(position);
                 Map<String, ?> clickedItem = (Map<String, ?>) o;
-                Intent i = new Intent(arg0.getContext(), CacheMap.class);
+                Intent i = new Intent(arg0.getContext(), CachePage.class);
                 //i.putExtra("lat", clickedItem.values().toArray()[1].toString());
                 i.putExtra("lat",43.650007);
                 i.putExtra("long",-79.385866);
