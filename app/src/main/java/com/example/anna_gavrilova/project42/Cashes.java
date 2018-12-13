@@ -9,6 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.anna_gavrilova.project42.db.CacheDB;
+import com.example.anna_gavrilova.project42.db.DB;
+import com.example.anna_gavrilova.project42.models.CacheModel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +24,7 @@ public class Cashes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cashes);
-        Cacheq a=new Cacheq("Hexahue","Very difficult one",43.650007,-79.385866);
-        Cacheq b=new Cacheq("Hexahue","Very difficult one",43.650007,-79.385866);
-        Cacheq e=new Cacheq("Hexahue","Very difficult one",43.650007,-79.385866);
-        Cacheq d=new Cacheq("Hexahue","Very difficult one",43.650007,-79.385866);
-
-
-        List<Cacheq> caches=new ArrayList<Cacheq>();
-        caches.add(a);
-        caches.add(b);
-        caches.add(e);
-        caches.add(d);
-
+        final List<CacheModel> caches = CacheDB.getAll(DB.getAppDatabase(this));
 
         final ListView listCaches = findViewById(R.id.lstCaches);
         listCaches.setClickable(true);
@@ -44,20 +37,20 @@ public class Cashes extends AppCompatActivity {
                 Map<String, ?> clickedItem = (Map<String, ?>) o;
                 Intent i = new Intent(arg0.getContext(), CachePage.class);
                 //i.putExtra("lat", clickedItem.values().toArray()[1].toString());
-                i.putExtra("lat",43.650007);
-                i.putExtra("long",-79.385866);
+                i.putExtra("lat",caches.get(position).getLatitude());
+                i.putExtra("long",caches.get(position).getLongitude());
                 startActivity(i);
             }
         });
 
         HashMap<String, String> theCaches = new HashMap<>();
-        for (Cacheq c: caches) {
-            theCaches.put(c.toString(), c.name);
+        for (CacheModel c: caches) {
+            theCaches.put(c.toString(), c.getName());
         }
 
-        List<HashMap<String, String>> presenterList = new ArrayList<>();
+        List<HashMap<String, String>> cacheList = new ArrayList<>();
         SimpleAdapter ada = new SimpleAdapter(this,
-                presenterList,
+                cacheList,
                 R.layout.cache_item,
                 new String[]{"name", "email"},
                 new int[]{R.id.text1, R.id.text2});
@@ -67,7 +60,7 @@ public class Cashes extends AppCompatActivity {
             Map.Entry pair = (Map.Entry) o;
             res.put("name", pair.getKey().toString());
             res.put("email", pair.getValue().toString());
-            presenterList.add(res);
+            cacheList.add(res);
         }
         listCaches.setAdapter(ada);
 

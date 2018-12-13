@@ -6,12 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.anna_gavrilova.project42.db.InitializeDB;
+import com.example.anna_gavrilova.project42.db.DB;
+
 public class Splash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        //DB.deleteAppDatabase(this);
+        InitializeDB.initializeDB(DB.getAppDatabase(this));
 
         final Button about = (Button) findViewById(R.id.btnAbout);
         about.setOnClickListener(new View.OnClickListener() {
